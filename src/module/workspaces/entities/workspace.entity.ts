@@ -1,3 +1,4 @@
+import { IsNumber, IsString } from "class-validator";
 import { Reservation } from "src/module/reservation/entities/reservation.entity";
 import { Room } from "src/module/rooms/entities/room.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
@@ -7,21 +8,26 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGene
 export class Workspace {
 
     @PrimaryGeneratedColumn()
+    @IsNumber()
     id:number
 
     @Column()
+    @IsString()
     name:string
 
     @Column()
+    @IsNumber()
     row: number
 
     @Column()
+    @IsNumber()
     column: number
 
     @Column()
+    @IsNumber()
     room_id: number
 
-    @Column()
+    @Column({type: "varchar"})
     status: "Busy" | "Available"
 
     @OneToMany(() => Reservation, reservation => reservation.workspace)

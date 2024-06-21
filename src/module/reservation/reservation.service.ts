@@ -14,7 +14,7 @@ export class ReservationService {
         .innerJoin('reservation.workspace', 'workspace')
         .select('reservation.session_id', 'session_id')
         .addSelect('COUNT(workspace.id)', 'count')
-        .where('workspace.status = :status', { status: 'Busy' })
+        .where('workspace.status = :status', { status:'Busy'})
         .groupBy('reservation.session_id')
         .orderBy('count', 'DESC')
         .getRawMany();
@@ -31,16 +31,20 @@ export class ReservationService {
     }
   }
 
-  async findSessionMoreAvailable() {
+  async findSessionMoreAvailable(): Promise<{ session_id: number; count: number }[]> {
     try {
+
+      const status = "Available"
+      console.log('Status:', status, 'Type:', typeof status);
+
+
       const results = await this.reservationRepository.createQueryBuilder('reservation')
         .leftJoin('reservation.workspace', 'workspace')
-        .leftJoin('reservation.session_id', 'session_id')
         .select('reservation.session_id', 'session_id')
         .addSelect('COUNT(workspace.id)', 'count')
-        .where('workspace.status = :status', {status: 'Available'})
-        .groupBy('reservation.session_id, workspace.id')
-        .orderBy('count', 'ASC')
+        .where('workspace.status = :status', {status})
+        .groupBy('reservation.session_id')
+        .orderBy('count', 'DESC')
         .getRawMany()
 
         if(results.length === 0){
