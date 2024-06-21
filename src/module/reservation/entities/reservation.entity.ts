@@ -1,3 +1,4 @@
+import { IsNumber } from "class-validator";
 import { Sessions } from "src/module/session/entities/session.entity";
 import { User } from "src/module/users/entities/user.entity";
 import { Workspace } from "src/module/workspaces/entities/workspace.entity";
@@ -8,15 +9,19 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn
 export class Reservation {
 
     @PrimaryGeneratedColumn()
+    @IsNumber()
     id: number
 
     @Column()
+    @IsNumber()
     session_id: number
 
     @Column()
+    @IsNumber()
     workspace_id: number
 
     @Column()
+    @IsNumber()
     user_id: number
 
     @OneToOne(() => Sessions, session => session.reservation)
